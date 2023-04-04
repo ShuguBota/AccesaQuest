@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ro.cristian.accesaquest.controllers.Welcome">
+   <HBox alignment="CENTER" layoutX="200.0" layoutY="150.0" prefHeight="100.0" prefWidth="200.0" spacing="25.0"
+         AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0"
+         AnchorPane.topAnchor="150.0">
+      <Button mnemonicParsing="false" onAction="#loginClicked" text="Login" textAlignment="CENTER"/>
+      <Button mnemonicParsing="false" onAction="#registerClicked" text="Register" textAlignment="CENTER"/>
+   </HBox>
+</AnchorPane>

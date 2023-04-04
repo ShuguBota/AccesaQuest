@@ -1,9 +1,13 @@
 package ro.cristian.accesaquest.models;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+    private static final Logger logger = LogManager.getLogger(Player.class);
     private final String username;
     private final String email;
     private String password;
@@ -22,6 +26,8 @@ public class Player {
         this.tokens = 0;
         this.badges = new ArrayList<>();
         this.rank = 1;
+
+        logger.info("Player object created");
     }
 
     public void addBadge(Badge badge){

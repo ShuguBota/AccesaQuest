@@ -1,6 +1,10 @@
 package ro.cristian.accesaquest.models;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Badge {
+    private static final Logger logger = LogManager.getLogger(Badge.class);
     private String name;
     private String description;
     private String imagePath;
@@ -9,6 +13,8 @@ public class Badge {
         this.name = name;
         this.description = description;
         this.imagePath = imagePath;
+
+        logger.info("Badge object created");
     }
 
     public String getName() {

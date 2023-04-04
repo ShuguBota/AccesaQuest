@@ -6,8 +6,9 @@ module ro.cristian.accesaquest {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires org.junit.jupiter.api;
+    requires org.apache.logging.log4j;
 
 
-    opens ro.cristian.accesaquest to javafx.fxml;
+    opens ro.cristian.accesaquest.controllers to javafx.fxml;
     exports ro.cristian.accesaquest;
 }

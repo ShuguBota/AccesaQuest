@@ -1,12 +1,10 @@
 package ro.cristian.accesaquest.models;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Quest {
-    /*
-    + name: String
-    + descrption: String (maybe more than String)
-    + createdBy: String
-    + taken: Boolean
-     */
+    private static final Logger logger = LogManager.getLogger(Quest.class);
 
     private String name;
     private String description;
@@ -18,6 +16,8 @@ public class Quest {
         this.description = description;
         this.createdBy = createdBy;
         this.taken = false;
+
+        logger.info("Quest object created");
     }
 
     public String getName() {
