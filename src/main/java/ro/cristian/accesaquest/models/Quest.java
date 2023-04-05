@@ -1,10 +1,9 @@
 package ro.cristian.accesaquest.models;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 public class Quest {
-    private static final Logger logger = LogManager.getLogger(Quest.class);
+    private static final Logger logger = Logger.getLogger("| Quest | ");
 
     private String name;
     private String description;

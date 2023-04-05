@@ -7,15 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import ro.cristian.accesaquest.models.Badge;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class App extends Application {
-    private static final Logger logger = LogManager.getLogger(App.class);
+    private static final Logger logger = Logger.getLogger("| App | ");
     private static App appInstance;
 
     private Stage primaryWindow;
@@ -39,7 +36,7 @@ public class App extends Application {
 
     public static Parent loadFXML(String fileName) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("ui/" + fileName + ".fxml"));
-        logger.info("Loading {} fxml file", fileName);
+        logger.info("Loading " + fileName + " fxml file");
         return fxmlLoader.load();
     }
 

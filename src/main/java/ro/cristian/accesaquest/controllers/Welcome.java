@@ -3,14 +3,14 @@ package ro.cristian.accesaquest.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import ro.cristian.accesaquest.App;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class Welcome {
-    private static final Logger logger = LogManager.getLogger(Welcome.class);
+    private static final Logger logger = Logger.getLogger("| Welcome | ");
 
     @FXML
     public void loginClicked(ActionEvent actionEvent) {

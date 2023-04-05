@@ -1,13 +1,16 @@
 package ro.cristian.accesaquest.models;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class Player {
-    private static final Logger logger = LogManager.getLogger(Player.class);
+import java.util.logging.Logger;
+
+public class Player implements JSON{
+    private static final Logger logger = Logger.getLogger("| Player | ");
     private final String username;
     private final String email;
     private String password;
@@ -18,6 +21,8 @@ public class Player {
 
     private Integer rank;
 
+    private String uuid;
+
     public Player(String username, String email, String password) {
         this.username = username;
         this.email = email;
@@ -26,6 +31,7 @@ public class Player {
         this.tokens = 0;
         this.badges = new ArrayList<>();
         this.rank = 1;
+        this.uuid = UUID.randomUUID().toString();
 
         logger.info("Player object created");
     }
@@ -57,6 +63,10 @@ public class Player {
         return password;
     }
 
+    public String getUUID(){
+        return uuid;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -71,5 +81,26 @@ public class Player {
 
     public Integer getRank() {
         return rank;
+    }
+
+    /**
+     * @return return the JSON object for the model
+     */
+    @Override
+    public JSONObject createJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("email", email);
+        json.put("username", username);
+        json.put("password", password);
+        json.put("tokens", tokens);
+        json.put("rank", rank);
+
+        JSONArray badgesJSON = new JSONArray();
+        badgesJSON.addAll(badges);
+        json.put("badges", badgesJSON);
+        json.put("id", uuid);
+
+        return json;
     }
 }

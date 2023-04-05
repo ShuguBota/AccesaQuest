@@ -1,10 +1,9 @@
 package ro.cristian.accesaquest.models;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 public class Badge {
-    private static final Logger logger = LogManager.getLogger(Badge.class);
+    private static final Logger logger = Logger.getLogger("| Badge | ");
     private String name;
     private String description;
     private String imagePath;

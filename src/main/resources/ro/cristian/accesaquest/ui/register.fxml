@@ -3,15 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ro.cristian.accesaquest.controllers.Register">
-   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="100.0"
-         AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="100.0">
-      <Label text="Email"/>
-      <TextField/>
-      <Label text="Username"/>
-      <TextField/>
-      <Label text="Password"/>
-      <PasswordField/>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.Register">
+   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="100.0">
+      <Label text="Email" />
+      <TextField fx:id="emailField" />
+      <Label text="Username" />
+      <TextField fx:id="usernameField" />
+      <Label text="Password" />
+      <PasswordField fx:id="passwordField" />
+      <Button mnemonicParsing="false" onAction="#register" prefHeight="26.0" prefWidth="164.0" text="Register" />
    </VBox>
 </AnchorPane>
