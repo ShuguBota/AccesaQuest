@@ -32,7 +32,7 @@ public class App extends Application {
 
         primaryWindow.setWidth(getScreenWidth()/1.5);
         primaryWindow.setHeight(getScreenHeight()/1.5);
-        primaryWindow.show();
+        setDimensions();
 
         setOnExit();
     }
@@ -63,19 +63,32 @@ public class App extends Application {
         Notification.showConfirmationNotificationWithCode("Exit Application", "Are you sure you want to exit the application? All your progress will be erased!", this::hardShutdown);
     }
 
+    public void setDimensions() {
+        var oldHeight = primaryWindow.getHeight();
+        var oldWidth = primaryWindow.getWidth();
+
+        //Change a bit the values to center stuff properly
+        primaryWindow.setWidth(oldWidth - 1.0);
+        primaryWindow.setWidth(oldWidth + 1.0);
+        primaryWindow.setHeight(oldHeight - 1.0);
+        primaryWindow.setHeight(oldHeight + 1.0);
+
+        primaryWindow.show();
+    }
+
 
     public static void main(String[] args) {
         launch();
     }
 
-    public static int getScreenWidth(){
+    public static double getScreenWidth(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        return (int) (screenBounds.getWidth());
+        return screenBounds.getWidth();
     }
 
-    public static int getScreenHeight(){
+    public static double getScreenHeight(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        return (int) (screenBounds.getHeight());
+        return screenBounds.getHeight();
     }
 
     public Stage getStage(){

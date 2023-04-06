@@ -26,6 +26,7 @@ public class Welcome {
         try {
             Scene loginScene = new Scene(App.loadFXML(fileName));
             App.getInstance().getStage().setScene(loginScene);
+            App.getInstance().setDimensions();
         } catch (IOException e){
             logger.info("The login fxml file couldn't be loaded");
             e.printStackTrace();
