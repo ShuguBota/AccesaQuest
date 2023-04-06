@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.json.simple.JSONObject;
+import ro.cristian.accesaquest.App;
 import ro.cristian.accesaquest.util.Config;
 import ro.cristian.accesaquest.models.Player;
 
@@ -19,14 +20,6 @@ import java.util.regex.Pattern;
 public class PlayerDB implements PlayerDBI {
     private static final Logger logger = Logger.getLogger("| PlayerDB | ");
     private final String container = "players";
-
-    /**
-     * @return all the players from the db
-     */
-    @Override
-    public List<Player> getAll() {
-        return null;
-    }
 
     /**
      * Add a player to the database
@@ -50,31 +43,9 @@ public class PlayerDB implements PlayerDBI {
         JSONObject json = player.createJSON();
         DataAccess.createDBObject(container, json);
 
+        //Set the myPlayer
+        App.getInstance().setMyPlayer(json);
         return true;
-    }
-
-    /**
-     * Remove a player from the database
-     *
-     * @param email    email of the player
-     * @param password password of the player
-     * @return whether operation was successful
-     */
-    @Override
-    public boolean removePlayer(String email, String password) {
-        return false;
-    }
-
-    /**
-     * Update a player from the database
-     *
-     * @param idPlayer the id of the player needed to change
-     * @param newData  the player data
-     * @return whether operation was successful
-     */
-    @Override
-    public boolean updatePlayer(String idPlayer, Player newData) {
-        return false;
     }
 
     /**
@@ -89,7 +60,11 @@ public class PlayerDB implements PlayerDBI {
         //Email not found in the db
         if(res == null) return false;
         //Check if password match
-        return res.get("password").equals(password);
+        if(!res.get("password").equals(password)) return false;
+
+        //Set the myPlayer
+        App.getInstance().setMyPlayer(res);
+        return true;
     }
 
     private SqlQuerySpec queryOnEmail(String email){

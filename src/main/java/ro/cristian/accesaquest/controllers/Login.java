@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import ro.cristian.accesaquest.App;
 import ro.cristian.accesaquest.database.PlayerDB;
 import ro.cristian.accesaquest.util.Notification;
 
@@ -28,6 +29,7 @@ public class Login {
         }
         else{
             Notification.showConfirmationNotification("Login Confirmation", "Logged in successfully");
+            App.getInstance().loadScene("profile");
         }
     }
 }

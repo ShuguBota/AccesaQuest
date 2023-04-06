@@ -14,23 +14,12 @@ public class Welcome {
 
     @FXML
     public void loginClicked(ActionEvent actionEvent) {
-        loadScene("login");
+        App.getInstance().loadScene("login");
     }
 
     @FXML
     public void registerClicked(ActionEvent actionEvent) {
-        loadScene("register");
-    }
-
-    private void loadScene(String fileName){
-        try {
-            Scene loginScene = new Scene(App.loadFXML(fileName));
-            App.getInstance().getStage().setScene(loginScene);
-            App.getInstance().setDimensions();
-        } catch (IOException e){
-            logger.info("The login fxml file couldn't be loaded");
-            e.printStackTrace();
-        }
+        App.getInstance().loadScene("register");
     }
 
 }

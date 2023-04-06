@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.json.simple.JSONObject;
+import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.util.Notification;
 
 import java.io.IOException;
@@ -19,6 +21,8 @@ public class App extends Application {
 
     private Stage primaryWindow;
     private Scene scene;
+
+    private JSONObject myPlayer = null;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -76,6 +80,17 @@ public class App extends Application {
         primaryWindow.show();
     }
 
+    public void loadScene(String fileName){
+        try {
+            Scene loginScene = new Scene(App.loadFXML(fileName));
+            App.getInstance().getStage().setScene(loginScene);
+            App.getInstance().setDimensions();
+        } catch (IOException e){
+            logger.info("The login fxml file couldn't be loaded");
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         launch();
@@ -97,5 +112,27 @@ public class App extends Application {
 
     public static App getInstance(){
         return appInstance;
+    }
+
+    public JSONObject getMyPlayer() {
+        return myPlayer;
+    }
+
+    public void setMyPlayer(JSONObject myPlayer) {
+        this.myPlayer = myPlayer;
+    }
+
+    public void openWindow(String title, String fxmlFile, double size) {
+        try {
+            Stage window = new Stage();
+            final int screenSize = (int) Math.round(App.getScreenHeight() * size);
+            Parent parent = App.loadFXML(fxmlFile);
+            Scene scene = new Scene(parent, screenSize, screenSize);
+            window.setTitle(title);
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

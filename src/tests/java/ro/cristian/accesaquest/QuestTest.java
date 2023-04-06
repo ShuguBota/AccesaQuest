@@ -1,5 +1,6 @@
 package ro.cristian.accesaquest;
 
+import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.models.Quest;
 
@@ -7,14 +8,15 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuestTest {
-    private static Player player;
+    private static JSONObject player;
 
     @BeforeAll
     public static void beforeTest(){
         String name = "me";
         String email = "me@me.com";
         String password = "123";
-        player = new Player(name, email, password);
+        var playerObject = new Player(name, email, password);
+        player = playerObject.createJSON();
     }
 
     @AfterAll

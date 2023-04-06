@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import ro.cristian.accesaquest.App;
 import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.database.PlayerDB;
 import ro.cristian.accesaquest.util.Notification;
@@ -21,12 +22,12 @@ public class Register {
         Player player = new Player(usernameField.getText(), emailField.getText(), passwordField.getText());
 
         PlayerDB playerDB = new PlayerDB();
-        boolean res = false;
+        boolean res;
 
         try {
             res = playerDB.createPlayer(player);
         } catch (Exception e) {
-            Notification.showErrorNotification(e);
+            Notification.showErrorNotification(e.getMessage());
             return;
         }
 
@@ -38,6 +39,7 @@ public class Register {
         }
         else{
             Notification.showConfirmationNotification("Register confirmation", "You have registered successfully");
+            App.getInstance().loadScene("profile");
         }
     }
 }

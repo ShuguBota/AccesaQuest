@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.Home">
+
+    <top>
+        <fx:include source="navigation.fxml" BorderPane.alignment="TOP_CENTER" />
+    </top>
+    <center>
+        <fx:include source="incomplete_quests.fxml" BorderPane.alignment="CENTER"/>
+    </center>
+   <bottom>
+      <Button mnemonicParsing="false" onAction="#createQuest" text="Create Quest" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

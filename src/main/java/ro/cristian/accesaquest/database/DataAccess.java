@@ -22,19 +22,16 @@ public class DataAccess {
 
     private static final CosmosDatabase db = client.getDatabase(Config.databaseID);
     private static final CosmosContainer player_container = db.getContainer(Config.playersContainer);
-
-    public static CosmosClient getClient() {
-        return client;
-    }
+    private static final CosmosContainer quest_container = db.getContainer(Config.questsContainer);
 
     public static List<JSONObject> queryDBList(String container, SqlQuerySpec query){
         CosmosContainer queryContainer = getQueryContainer(container);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         //Limit the amount
-        int maxItemCount = 1000;
         int maxBufferedItemCount = 100;
         int maxDegreeOfParallelism = 1000;
+        int maxItemCount = 1000;
         options.setMaxBufferedItemCount(maxBufferedItemCount);
         options.setMaxDegreeOfParallelism(maxDegreeOfParallelism);
         options.setQueryMetricsEnabled(false);
@@ -51,7 +48,6 @@ public class DataAccess {
                     itemList.add(item);
                 }
             }
-
         } while (continuationToken != null);
 
         if(itemList.size() > 0){
@@ -72,6 +68,7 @@ public class DataAccess {
         CosmosContainer queryContainer = null;
 
         if(container.equals("players")) queryContainer = player_container;
+        if(container.equals("quests")) queryContainer = quest_container;
 
         return queryContainer;
     }
