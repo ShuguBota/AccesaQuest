@@ -16,7 +16,7 @@ public interface PlayerDBI {
      * @param player the player data that needs to be added
      * @return whether operation was successful
      */
-    public boolean createPlayer(Player player);
+    public boolean createPlayer(Player player) throws Exception;
 
     /**
      * Remove a player from the database

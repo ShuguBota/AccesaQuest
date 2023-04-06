@@ -6,6 +6,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.database.PlayerDB;
+import ro.cristian.accesaquest.util.Notification;
 
 import java.util.logging.Logger;
 
@@ -17,9 +18,26 @@ public class Register {
 
     @FXML
     private void register(ActionEvent actionEvent) {
-        Player player = new Player(emailField.getText(), usernameField.getText(), passwordField.getText());
+        Player player = new Player(usernameField.getText(), emailField.getText(), passwordField.getText());
 
         PlayerDB playerDB = new PlayerDB();
-        playerDB.createPlayer(player);
+        boolean res = false;
+
+        try {
+            res = playerDB.createPlayer(player);
+        } catch (Exception e) {
+            Notification.showErrorNotification(e);
+            return;
+        }
+
+        if(!res) {
+            Notification.showErrorNotification("Email already in use");
+            emailField.clear();
+            usernameField.clear();
+            passwordField.clear();
+        }
+        else{
+            Notification.showConfirmationNotification("Register confirmation", "You have registered successfully");
+        }
     }
 }
