@@ -21,12 +21,12 @@ public class QuestDB implements QuestDBI{
     @Override
     public boolean createQuest(Quest quest) throws Exception {
         //Check for name to be unique
-        JSONObject resName = DataAccess.queryDBObject(container, queryOnName(quest.getName()));
+        JSONObject resName = DataAccess.findObject(container, queryOnName(quest.getName()));
 
         if(resName != null) throw new Exception("A quest with this name has already been created");
 
         JSONObject json = quest.createJSON();
-        DataAccess.createDBObject(container, json);
+        DataAccess.createObject(container, json);
 
         return true;
     }
@@ -36,10 +36,11 @@ public class QuestDB implements QuestDBI{
      * @param name the name of the player so we don't show his quests
      * @param amount the max amount of quests to get back
      * @return List of JSONObjects containing the quests
+     * @throws Exception if the operation was unsuccessful
      */
     @Override
-    public List<JSONObject> getIncompleteQuests(String name, int amount) {
-        var response = DataAccess.queryDBList(container, queryIncompleteQuests(name));
+    public List<JSONObject> getIncompleteQuests(String name, int amount) throws Exception {
+        var response = DataAccess.findListObjects(container, queryIncompleteQuests(name));
 
         if(response == null) return null;
 

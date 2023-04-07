@@ -19,5 +19,5 @@ public interface QuestDBI {
      * @param amount the max amount of quests to get back
      * @return List of JSONObjects containing the quests
      */
-    List<JSONObject> getIncompleteQuests(String name, int amount);
+    List<JSONObject> getIncompleteQuests(String name, int amount) throws Exception;
 }

@@ -25,7 +25,7 @@ public class Register {
         boolean res;
 
         try {
-            res = playerDB.createPlayer(player);
+            res = playerDB.register(player);
         } catch (Exception e) {
             Notification.showErrorNotification(e.getMessage());
             return;

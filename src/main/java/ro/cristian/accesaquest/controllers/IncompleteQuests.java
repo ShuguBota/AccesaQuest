@@ -10,10 +10,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
+import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.App;
 import ro.cristian.accesaquest.database.QuestDB;
+import ro.cristian.accesaquest.util.Notification;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class IncompleteQuests implements Initializable {
@@ -23,7 +26,14 @@ public class IncompleteQuests implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         QuestDB questDB = new QuestDB();
         String username = (String) App.getInstance().getMyPlayer().get("username");
-        var questsIncomplete = questDB.getIncompleteQuests(username,5);
+        List<JSONObject> questsIncomplete = null;
+        try {
+            questsIncomplete = questDB.getIncompleteQuests(username,5);
+        } catch (Exception e) {
+            Notification.showErrorNotification(e.getMessage());
+        }
+
+        if(questsIncomplete == null) return;
 
         VBox primaryVBox = new VBox();
         for(var quest : questsIncomplete){

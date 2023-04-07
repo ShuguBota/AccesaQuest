@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 public class Home implements Initializable {
 
     public void createQuest(ActionEvent actionEvent) {
-        App.getInstance().openWindow("Create Quest", "create_quest", 0.4);
+        App.getInstance().openWindow("Create Quest", "create_quest", 0.7);
     }
 
     @Override

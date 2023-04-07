@@ -64,7 +64,7 @@ public class App extends Application {
      * Shutdown the Application.
      */
     public void softShutdown() {
-        Notification.showConfirmationNotificationWithCode("Exit Application", "Are you sure you want to exit the application? All your progress will be erased!", this::hardShutdown);
+        Notification.showConfirmationNotificationWithCode("Exit Application", "Are you sure you want to exit the application?", this::hardShutdown);
     }
 
     public void setDimensions() {

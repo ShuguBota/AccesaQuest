@@ -3,25 +3,51 @@ package ro.cristian.accesaquest.models;
 import org.json.simple.JSONObject;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
-public class Quest implements JSON{
-    private static final Logger logger = Logger.getLogger("| Quest | ");
+public class Quest implements JSON {
+    private final String name;
+    private final String description;
+    private final String createdBy_id;
+    private final String takenBy_id;
+    private final boolean completedTaker; //The one who took it needs to accept it
+    private final boolean acceptedCreator; //The one accepted need to accept the quest is done
+    private final String id;
+    private final int tokens;
 
-    private String name;
-    private String description;
-    private JSONObject createdBy;
-    private Boolean taken;
-    private String uuid;
+    public Quest(String name, String description, String createdBy_id, int tokens){
+        this.id = UUID.randomUUID().toString();
 
-    public Quest(String name, String description, JSONObject createdBy){
         this.name = name;
         this.description = description;
-        this.createdBy = createdBy;
-        this.taken = false;
-        this.uuid = UUID.randomUUID().toString();
+        this.createdBy_id = createdBy_id;
+        this.tokens = tokens;
 
-        logger.info("Quest object created");
+        this.takenBy_id = null;
+
+        this.acceptedCreator = false;
+        this.completedTaker = false;
+    }
+
+    /**
+     * @return return the JSON object for the model
+     */
+    @Override
+    public JSONObject createJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("id", id);
+
+        json.put("name", name);
+        json.put("description", description);
+        json.put("createdBy_id", createdBy_id);
+        json.put("tokens", tokens);
+
+        json.put("takenBy_id", takenBy_id);
+
+        json.put("acceptedCreator", acceptedCreator);
+        json.put("completedTaker", completedTaker);
+
+        return json;
     }
 
     public String getName() {
@@ -32,27 +58,7 @@ public class Quest implements JSON{
         return description;
     }
 
-    public JSONObject getCreatedBy() {
-        return createdBy;
-    }
-
-    public Boolean getTaken() {
-        return taken;
-    }
-
-    /**
-     * @return return the JSON object for the model
-     */
-    @Override
-    public JSONObject createJSON() {
-        JSONObject json = new JSONObject();
-
-        json.put("name", name);
-        json.put("description", description);
-        json.put("createdBy", createdBy);
-        json.put("taken", taken);
-        json.put("id", uuid);
-
-        return json;
+    public String getCreatedBy() {
+        return createdBy_id;
     }
 }

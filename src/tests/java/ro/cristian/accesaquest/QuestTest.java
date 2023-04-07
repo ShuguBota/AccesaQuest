@@ -1,6 +1,7 @@
 package ro.cristian.accesaquest;
 
 import org.json.simple.JSONObject;
+import ro.cristian.accesaquest.database.QuestDB;
 import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.models.Quest;
 
@@ -29,9 +30,9 @@ public class QuestTest {
     public void createClassTest(){
         String name = "quest";
         String description = "a description";
-        Quest quest = new Quest(name, description, player);
+        Quest quest = new Quest(name, description, (String) player.get("id"), 0);
         assertEquals(name, quest.getName());
         assertEquals(description, quest.getDescription());
-        assertEquals(player, quest.getCreatedBy());
+        assertEquals(player.get("id"), quest.getCreatedBy());
     }
 }

@@ -7,48 +7,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import java.util.logging.Logger;
-
 public class Player implements JSON{
-    private static final Logger logger = Logger.getLogger("| Player | ");
-    private final String username;
+    private String username;
     private final String email;
-    private String password;
-
-    private Integer tokens;
-
-    private List<Badge> badges;
-
-    private Integer rank;
-
-    private String uuid;
+    private final String password;
+    private final Integer tokens;
+    private final List<String> badges_id;
+    private final Integer rank;
+    private final String id;
+    private final List<String> questsCreated_id;
+    private final List<String> questsAccepted_id;
 
     public Player(String username, String email, String password) {
+        this.id = UUID.randomUUID().toString();
+
         this.username = username;
         this.email = email;
         this.password = password;
 
         this.tokens = 0;
-        this.badges = new ArrayList<>();
         this.rank = 1;
-        this.uuid = UUID.randomUUID().toString();
+        this.badges_id = new ArrayList<>();
 
-        logger.info("Player object created");
+        this.questsCreated_id = new ArrayList<>();
+        this.questsAccepted_id = new ArrayList<>();
     }
 
-    public void addBadge(Badge badge){
-        badges.add(badge);
-    }
+    /**
+     * @return return the JSON object for the model
+     */
+    @Override
+    public JSONObject createJSON() {
+        JSONObject json = new JSONObject();
 
-    public void updateTokens(Boolean toAdd, Integer tokens){
-        if(toAdd)
-            this.tokens += tokens;
-        else
-            this.tokens -= tokens;
-    }
+        json.put("id", id);
 
-    public void rankUp(){
-        rank++;
+        json.put("email", email);
+        json.put("username", username);
+        json.put("password", password);
+
+        json.put("tokens", tokens);
+        json.put("rank", rank);
+        JSONArray badgesJSON = new JSONArray();
+        badgesJSON.addAll(badges_id);
+        json.put("badges_id", badgesJSON);
+
+        JSONArray questsCreatedJSON = new JSONArray();
+        questsCreatedJSON.addAll(questsCreated_id);
+        json.put("questsCreated_id", questsCreatedJSON);
+        JSONArray questsAcceptedJSON = new JSONArray();
+        questsAcceptedJSON.addAll(questsAccepted_id);
+        json.put("questsAccepted_id", questsAcceptedJSON);
+
+        return json;
     }
 
     public String getUsername() {
@@ -63,44 +74,11 @@ public class Player implements JSON{
         return password;
     }
 
-    public String getUUID(){
-        return uuid;
+    public String getId() {
+        return id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getTokens() {
-        return tokens;
-    }
-
-    public List<Badge> getBadges() {
-        return badges;
-    }
-
-    public Integer getRank() {
-        return rank;
-    }
-
-    /**
-     * @return return the JSON object for the model
-     */
-    @Override
-    public JSONObject createJSON() {
-        JSONObject json = new JSONObject();
-
-        json.put("email", email);
-        json.put("username", username);
-        json.put("password", password);
-        json.put("tokens", tokens);
-        json.put("rank", rank);
-
-        JSONArray badgesJSON = new JSONArray();
-        badgesJSON.addAll(badges);
-        json.put("badges", badgesJSON);
-        json.put("id", uuid);
-
-        return json;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

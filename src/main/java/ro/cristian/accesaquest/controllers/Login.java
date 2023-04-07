@@ -20,7 +20,12 @@ public class Login {
         logger.info("Checking login credentials");
 
         PlayerDB playerDB = new PlayerDB();
-        var res = playerDB.login(emailField.getText(), passwordField.getText());
+        boolean res = false;
+        try {
+            res = playerDB.login(emailField.getText(), passwordField.getText());
+        } catch (Exception e) {
+            Notification.showErrorNotification(e.getMessage());
+        }
 
         if(!res) {
             Notification.showErrorNotification("Incorrect credentials");
