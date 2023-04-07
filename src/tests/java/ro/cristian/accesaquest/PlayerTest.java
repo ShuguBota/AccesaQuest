@@ -13,7 +13,6 @@ public class PlayerTest {
 
     @Test
     public void createClassTest(){
-        System.out.println("Beginning test");
         String name = "ShuguBota";
         String email = "cristiancsete06@gmail.com";
         String password = "1234Cc";

@@ -21,10 +21,13 @@ public class JSON {
                           (String) playerJSON.get("email"),
                           (String) playerJSON.get("password"),
                           (int) playerJSON.get("tokens"),
-                          (List<String>) playerJSON.get("badges"),
+                          (List<String>) playerJSON.get("badges_id"),
                           (int) playerJSON.get("rank"),
                           (String) playerJSON.get("id"),
                           (List<String>) playerJSON.get("questsCreated_id"),
-                          (List<String>) playerJSON.get("questsAccepted_id"));
+                          (List<String>) playerJSON.get("questsAccepted_id"),
+                          (int) playerJSON.get("questsTakenCompleted"),
+                          (int) playerJSON.get("questsCreatedCompleted"),
+                          (int) playerJSON.get("xp"));
     }
 }

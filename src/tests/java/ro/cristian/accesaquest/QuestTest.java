@@ -33,6 +33,7 @@ public class QuestTest {
             Quest quest = new Quest("A name", "Abcd", player.getId(), 0);
             Assertions.assertTrue(playerDB.register(player));
             Assertions.assertTrue(questDB.createQuest(quest));
+
             questDB.deleteQuest(quest.getId());
             playerDB.deleteById(player.getId());
         } catch (Exception e) {
@@ -50,6 +51,7 @@ public class QuestTest {
             Assertions.assertTrue(playerDB.register(player));
             Assertions.assertTrue(questDB.createQuest(quest));
             Assertions.assertThrows(Exception.class, () -> questDB.createQuest(quest), "A quest with this name has already been created");
+
             questDB.deleteQuest(quest.getId());
             playerDB.deleteById(player.getId());
         } catch (Exception e) {
@@ -67,6 +69,7 @@ public class QuestTest {
             Assertions.assertTrue(playerDB.register(player));
             Assertions.assertTrue(questDB.createQuest(quest));
             assertEquals(questDB.getCreatedQuests(player.getId()).size(), 1);
+
             questDB.deleteQuest(quest.getId());
             playerDB.deleteById(player.getId());
         } catch (Exception e) {
@@ -134,7 +137,72 @@ public class QuestTest {
             Assertions.assertTrue(questDB.completeQuest(playerTaker.getId(), quest.getId()));
             Assertions.assertTrue(questDB.completeQuest(playerCreator.getId(), quest.getId()));
 
-            //Assertions.assertThrows(Exception.class, () -> questDB.deleteQuest(quest.getId()), "Quest is not in the db");
+            Assertions.assertThrows(Exception.class, () -> questDB.deleteQuest(quest.getId()), "Quest is not in the db");
+
+            playerDB.deleteById(playerTaker.getId());
+            playerDB.deleteById(playerCreator.getId());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void rankUpdateTest() {
+        try{
+            PlayerDB playerDB = new PlayerDB();
+            QuestDB questDB = new QuestDB();
+            Player playerCreator = new Player("ShuguBota", "cristiancsete06@gmail.com", "1234Cc");
+            Quest quest = new Quest("A name", "Abcd", playerCreator.getId(), 100);
+            Assertions.assertTrue(playerDB.register(playerCreator));
+            Assertions.assertTrue(questDB.createQuest(quest));
+
+            Player playerTaker = new Player("Shugy", "cristian.csete06@gmail.com", "1234Cc");
+            Assertions.assertTrue(playerDB.register(playerTaker));
+            Assertions.assertTrue(questDB.takeQuest(playerTaker.getId(), quest.getId()));
+
+            Assertions.assertTrue(questDB.completeQuest(playerTaker.getId(), quest.getId()));
+            Assertions.assertTrue(questDB.completeQuest(playerCreator.getId(), quest.getId()));
+
+            Assertions.assertThrows(Exception.class, () -> questDB.deleteQuest(quest.getId()), "Quest is not in the db");
+
+            var resultPlayerTaker = playerDB.findPlayerById(playerTaker.getId());
+            Player updatedPlayerTaker = JSON.deserializeJSONPlayer(resultPlayerTaker);
+
+            assertEquals(11, updatedPlayerTaker.getRank());
+
+            playerDB.deleteById(playerTaker.getId());
+            playerDB.deleteById(playerCreator.getId());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void badgeUpdateTest() {
+        try{
+            PlayerDB playerDB = new PlayerDB();
+            QuestDB questDB = new QuestDB();
+            Player playerCreator = new Player("ShuguBota", "cristiancsete06@gmail.com", "1234Cc");
+            Quest quest = new Quest("A name", "Abcd", playerCreator.getId(), 100);
+            Assertions.assertTrue(playerDB.register(playerCreator));
+            Assertions.assertTrue(questDB.createQuest(quest));
+
+            Player playerTaker = new Player("Shugy", "cristian.csete06@gmail.com", "1234Cc");
+            Assertions.assertTrue(playerDB.register(playerTaker));
+            Assertions.assertTrue(questDB.takeQuest(playerTaker.getId(), quest.getId()));
+
+            Assertions.assertTrue(questDB.completeQuest(playerTaker.getId(), quest.getId()));
+            Assertions.assertTrue(questDB.completeQuest(playerCreator.getId(), quest.getId()));
+
+            Assertions.assertThrows(Exception.class, () -> questDB.deleteQuest(quest.getId()), "Quest is not in the db");
+
+            var resultPlayerTaker = playerDB.findPlayerById(playerTaker.getId());
+            Player updatedPlayerTaker = JSON.deserializeJSONPlayer(resultPlayerTaker);
+
+            assertEquals(1, updatedPlayerTaker.getBadges().size());
+
+            playerDB.deleteById(playerTaker.getId());
+            playerDB.deleteById(playerCreator.getId());
         } catch(Exception e) {
             e.printStackTrace();
         }

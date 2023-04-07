@@ -3,7 +3,9 @@ package ro.cristian.accesaquest.database;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.json.simple.JSONObject;
+import ro.cristian.accesaquest.App;
 import ro.cristian.accesaquest.models.JSON;
+import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.models.Quest;
 import ro.cristian.accesaquest.util.Config;
 
@@ -139,19 +141,19 @@ public class QuestDB implements QuestDBI{
         var resultPlayerCreated = DataAccess.findObject(playersContainer, queryPlayerById(playerIdCreated));
         var resultPlayerTaken = DataAccess.findObject(playersContainer, queryPlayerById(playerIdTaken));
 
-        if(resultPlayerCreated == null) throw new Exception("Player who created the quest is not in the db");
-        if(resultPlayerTaken == null) throw new Exception("Player who took the quest is not in the db");
+        if(resultPlayerCreated != null) {
+            var playerCreated = JSON.deserializeJSONPlayer(resultPlayerCreated);
+            playerCreated.removeQuestsCreated(questId);
+            var updateres1=  DataAccess.replaceObject(playersContainer, playerCreated.createJSON());
+            if(updateres1 >= 300) throw new Exception("There was a problem with the db");
+        }
+        if(resultPlayerTaken != null) {
+            var playerTaken = JSON.deserializeJSONPlayer(resultPlayerTaken);
 
-        var playerCreated = JSON.deserializeJSONPlayer(resultPlayerCreated);
-        var playerTaken = JSON.deserializeJSONPlayer(resultPlayerTaken);
+            playerTaken.removeQuestsAccepted(questId);
 
-        playerCreated.removeQuestsCreated(questId);
-        playerTaken.removeQuestsAccepted(questId);
-
-        var updateres1=  DataAccess.replaceObject(playersContainer, playerCreated.createJSON());
-        var updateres2 = DataAccess.replaceObject(playersContainer, playerTaken.createJSON());
-
-        if(updateres1 >= 300 || updateres2 >= 300) throw new Exception("There was a problem with the db");
+            var updateres2 = DataAccess.replaceObject(playersContainer, playerTaken.createJSON());
+        }
 
         //Delete the quest from the quest db
         int res = DataAccess.deleteObject(container, questId);
@@ -222,18 +224,7 @@ public class QuestDB implements QuestDBI{
 
         //Check if the quest is complete (marked by both)
         if(quest.isCompletedTaker() && quest.isAcceptedCreator()){
-            //Give the taker the tokens and update both players quests lists
-            var resultTaker = DataAccess.findObject(playersContainer, queryPlayerById(quest.getTakenBy_id()));
-
-            if(resultTaker == null) throw new Exception("Taker of the quest not found in the db");
-
-            var taker = JSON.deserializeJSONPlayer(resultTaker);
-            taker.updateTokens(quest.getTokens());
-            //taker.removeQuestsAccepted(quest.getId());
-
-            var updateTaker = DataAccess.replaceObject(playersContainer, taker.createJSON());
-
-            if(updateTaker >= 300) throw new Exception("Something went wrong with the player db");
+            updatePlayers(quest);
 
             //Delete quest
             deleteQuest(quest.getId());
@@ -264,7 +255,16 @@ public class QuestDB implements QuestDBI{
         //Allow only the creator to cancel it
         if(!quest.getCreatedBy_id().equals(questId)) throw new Exception("You are not the creator of the quest");
 
-        //If all the checks pass then delete the quest
+        //If all the checks pass then delete the quest and restore his tokens
+        var resultCreator = DataAccess.findObject(playersContainer, queryPlayerById(playerId));
+
+        if(resultCreator == null) throw new Exception("Player not found in the db");
+
+        var creator = JSON.deserializeJSONPlayer(resultCreator);
+        creator.updateTokens(quest.getTokens()); //Add the tokens back
+
+        DataAccess.replaceObject(playersContainer, creator.createJSON());
+
         return deleteQuest(questId);
     }
 
@@ -280,5 +280,62 @@ public class QuestDB implements QuestDBI{
         var paramList = new ArrayList<SqlParameter>();
         paramList.add(new SqlParameter("@playerId", playerId));
         return new SqlQuerySpec(sqlQuery, paramList);
+    }
+
+    private void updatePlayers(Quest quest) throws Exception {
+        //Give the taker the tokens and update both players xp
+
+        var resultTaker = DataAccess.findObject(playersContainer, queryPlayerById(quest.getTakenBy_id()));
+        var resultCreator = DataAccess.findObject(playersContainer, queryPlayerById(quest.getCreatedBy()));
+
+        if(resultTaker == null) throw new Exception("Taker of the quest not found in the db");
+        if(resultCreator == null) throw new Exception("Taker of the quest not found in the db");
+
+        var taker = JSON.deserializeJSONPlayer(resultTaker);
+        var creator = JSON.deserializeJSONPlayer(resultCreator);
+
+        //Update rank and tokens
+        taker.updateTokens(quest.getTokens());
+        taker.updateRank(quest.getTokens() * 10);
+        taker.addQuestsTakenCompleted();
+
+        creator.updateRank(quest.getTokens() * 5);
+        creator.addQuestsCreatedCompleted();
+
+        updateBadgesCreator(creator);
+        updateBadgesTaker(taker);
+
+        //Update the database
+        var updateTaker = DataAccess.replaceObject(playersContainer, taker.createJSON());
+        var updateCreator = DataAccess.replaceObject(playersContainer, creator.createJSON());
+
+        if(updateTaker >= 300) throw new Exception("Something went wrong with the player db");
+        if(updateCreator >= 300) throw new Exception("Something went wrong with the player db");
+    }
+
+    private Player updateBadgesCreator(Player creator) {
+        String fileName = "badge_questCreatedCompleted_";
+        if(creator.getQuestsCreatedCompleted() == 1) creator.addBadge(loadBadge(fileName + "1"));
+        if(creator.getQuestsCreatedCompleted() == 5) creator.addBadge(loadBadge(fileName + "2"));
+        if(creator.getQuestsCreatedCompleted() == 10) creator.addBadge(loadBadge(fileName + "3"));
+        if(creator.getQuestsCreatedCompleted() == 15) creator.addBadge(loadBadge(fileName + "4"));
+        if(creator.getQuestsCreatedCompleted() == 20) creator.addBadge(loadBadge(fileName + "5"));
+
+        return creator;
+    }
+
+    private Player updateBadgesTaker(Player taker) {
+        String fileName = "badge_questsTakenCompleted_";
+        if(taker.getQuestsTakenCompleted() == 1) taker.addBadge(loadBadge(fileName + "1"));
+        if(taker.getQuestsTakenCompleted() == 5) taker.addBadge(loadBadge(fileName + "2"));
+        if(taker.getQuestsTakenCompleted() == 10) taker.addBadge(loadBadge(fileName + "3"));
+        if(taker.getQuestsTakenCompleted() == 15) taker.addBadge(loadBadge(fileName + "4"));
+        if(taker.getQuestsTakenCompleted() == 20) taker.addBadge(loadBadge(fileName + "5"));
+
+        return taker;
+    }
+
+    private String loadBadge(String fileName){
+        return App.class.getResource("badges/" + fileName + ".png").toString();
     }
 }

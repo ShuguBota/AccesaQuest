@@ -12,11 +12,14 @@ public class Player {
     private final String email;
     private final String password;
     private Integer tokens;
-    private final List<String> badges_id;
-    private final Integer rank;
+    private List<String> badges_id;
+    private Integer rank;
     private final String id;
     private final List<String> questsCreated_id;
     private final List<String> questsAccepted_id;
+    private Integer questsTakenCompleted;
+    private Integer questsCreatedCompleted;
+    private Integer xp;
 
     public Player(String username, String email, String password) {
         this.id = UUID.randomUUID().toString();
@@ -25,15 +28,20 @@ public class Player {
         this.email = email;
         this.password = password;
 
-        this.tokens = 0;
+        this.tokens = 100;
         this.rank = 1;
         this.badges_id = new ArrayList<>();
 
         this.questsCreated_id = new ArrayList<>();
         this.questsAccepted_id = new ArrayList<>();
+
+        this.questsTakenCompleted = 0;
+        this.questsCreatedCompleted = 0;
+
+        this.xp = 0;
     }
 
-    public Player(String username, String email, String password, Integer tokens, List<String> badges_id, Integer rank, String id, List<String> questsCreated_id, List<String> questsAccepted_id) {
+    public Player(String username, String email, String password, Integer tokens, List<String> badges_id, Integer rank, String id, List<String> questsCreated_id, List<String> questsAccepted_id, Integer questsTakenCompleted, Integer questsCreatedCompleted, Integer xp) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -43,6 +51,9 @@ public class Player {
         this.id = id;
         this.questsCreated_id = questsCreated_id;
         this.questsAccepted_id = questsAccepted_id;
+        this.questsTakenCompleted = questsTakenCompleted;
+        this.questsCreatedCompleted = questsCreatedCompleted;
+        this.xp = xp;
     }
 
     /**
@@ -69,6 +80,11 @@ public class Player {
         JSONArray questsAcceptedJSON = new JSONArray();
         if(questsAccepted_id != null) questsAcceptedJSON.addAll(questsAccepted_id);
         json.put("questsAccepted_id", questsAcceptedJSON);
+
+        json.put("questsTakenCompleted", questsTakenCompleted);
+        json.put("questsCreatedCompleted", questsCreatedCompleted);
+
+        json.put("xp", xp);
 
         return json;
     }
@@ -123,5 +139,43 @@ public class Player {
 
     public Integer getTokens() {
         return tokens;
+    }
+
+    public Integer getQuestsTakenCompleted() {
+        return questsTakenCompleted;
+    }
+
+    public Integer getQuestsCreatedCompleted() {
+        return questsCreatedCompleted;
+    }
+
+    public void addQuestsTakenCompleted() {
+        this.questsTakenCompleted++;
+    }
+
+    public void addQuestsCreatedCompleted() {
+        this.questsCreatedCompleted++;
+    }
+
+    public void updateRank(int xp){
+        this.xp += xp;
+
+        while(this.xp >= 100){
+            this.rank++;
+            this.xp -= 100;
+        }
+    }
+
+    public int getRank() {
+        return this.rank;
+    }
+
+    public void addBadge(String badge_id) {
+        if(this.badges_id == null) this.badges_id = new ArrayList<>();
+        this.badges_id.add(badge_id);
+    }
+
+    public List<String> getBadges(){
+        return this.badges_id;
     }
 }
