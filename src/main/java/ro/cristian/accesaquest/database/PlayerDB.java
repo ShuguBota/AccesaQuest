@@ -4,14 +4,14 @@ import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.App;
-import ro.cristian.accesaquest.models.JSON;
 import ro.cristian.accesaquest.models.Player;
+import ro.cristian.accesaquest.util.Config;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class PlayerDB implements PlayerDBI {
-    private final String container = "players";
+    private final String container = Config.playersContainer;
 
     /**
      * Add a player to the database
@@ -81,14 +81,24 @@ public class PlayerDB implements PlayerDBI {
      * @param id         id of the player
      * @throws Exception if the operation was unsuccessful
      */
-    public void deleteById(String id) throws Exception {
+    @Override
+    public boolean deleteById(String id) throws Exception {
         int res = DataAccess.deleteObject(container, id);
         if(res >= 300) throw new Exception("Db error, Status code: " + res);
+        return true;
     }
 
-    public void replace(Player player) throws Exception {
+    /**
+     * Replace a player info
+     *
+     * @param player     player object
+     * @throws Exception if the operation was unsuccessful
+     */
+    @Override
+    public boolean replace(Player player) throws Exception {
         int res = DataAccess.replaceObject(container, player.createJSON());
         if(res >= 300) throw new Exception("Db error, Status code: " + res);
+        return true;
     }
 
     /**

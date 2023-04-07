@@ -31,4 +31,22 @@ public interface PlayerDBI {
      * @throws Exception if the operation was unsuccessful
      */
     JSONObject findPlayerById(String id) throws Exception;
+
+    /**
+     * Delete a player by ID
+     *
+     * @param id         id of the player
+     * @return           if the operation was successful
+     * @throws Exception if the operation was unsuccessful
+     */
+    boolean deleteById(String id) throws Exception;
+
+    /**
+     * Replace a player info
+     *
+     * @param player     player object
+     * @return           if the operation was successful
+     * @throws Exception if the operation was unsuccessful
+     */
+    boolean replace(Player player) throws Exception;
 }

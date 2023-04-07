@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Player implements JSON{
+public class Player {
     private String username;
     private final String email;
     private final String password;
-    private final Integer tokens;
+    private Integer tokens;
     private final List<String> badges_id;
     private final Integer rank;
     private final String id;
@@ -33,10 +33,21 @@ public class Player implements JSON{
         this.questsAccepted_id = new ArrayList<>();
     }
 
+    public Player(String username, String email, String password, Integer tokens, List<String> badges_id, Integer rank, String id, List<String> questsCreated_id, List<String> questsAccepted_id) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.tokens = tokens;
+        this.badges_id = badges_id;
+        this.rank = rank;
+        this.id = id;
+        this.questsCreated_id = questsCreated_id;
+        this.questsAccepted_id = questsAccepted_id;
+    }
+
     /**
      * @return return the JSON object for the model
      */
-    @Override
     public JSONObject createJSON() {
         JSONObject json = new JSONObject();
 
@@ -49,14 +60,14 @@ public class Player implements JSON{
         json.put("tokens", tokens);
         json.put("rank", rank);
         JSONArray badgesJSON = new JSONArray();
-        badgesJSON.addAll(badges_id);
+        if(badges_id != null) badgesJSON.addAll(badges_id);
         json.put("badges_id", badgesJSON);
 
         JSONArray questsCreatedJSON = new JSONArray();
-        questsCreatedJSON.addAll(questsCreated_id);
+        if(questsCreated_id != null) questsCreatedJSON.addAll(questsCreated_id);
         json.put("questsCreated_id", questsCreatedJSON);
         JSONArray questsAcceptedJSON = new JSONArray();
-        questsAcceptedJSON.addAll(questsAccepted_id);
+        if(questsAccepted_id != null) questsAcceptedJSON.addAll(questsAccepted_id);
         json.put("questsAccepted_id", questsAcceptedJSON);
 
         return json;
@@ -80,5 +91,37 @@ public class Player implements JSON{
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void addQuestsAcceptedId(String questId) {
+        this.questsAccepted_id.add(questId);
+    }
+
+    public void addQuestsCreatedId(String questId) {
+        this.questsCreated_id.add(questId);
+    }
+
+    public List<String> getQuestsCreated_id() {
+        return questsCreated_id;
+    }
+
+    public List<String> getQuestsAccepted_id() {
+        return questsAccepted_id;
+    }
+
+    public boolean removeQuestsAccepted(String questId) {
+        return questsAccepted_id.removeIf(quest -> quest.equals(questId));
+    }
+
+    public boolean removeQuestsCreated(String questId) {
+        return questsCreated_id.removeIf(quest -> quest.equals(questId));
+    }
+
+    public void updateTokens(int tokens){
+        this.tokens += tokens;
+    }
+
+    public Integer getTokens() {
+        return tokens;
     }
 }

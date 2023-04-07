@@ -4,13 +4,13 @@ import org.json.simple.JSONObject;
 
 import java.util.UUID;
 
-public class Quest implements JSON {
+public class Quest {
     private final String name;
     private final String description;
     private final String createdBy_id;
-    private final String takenBy_id;
-    private final boolean completedTaker; //The one who took it needs to accept it
-    private final boolean acceptedCreator; //The one accepted need to accept the quest is done
+    private String takenBy_id;
+    private boolean completedTaker; //The one who took it needs to accept it
+    private boolean acceptedCreator; //The one accepted need to accept the quest is done
     private final String id;
     private final int tokens;
 
@@ -28,10 +28,20 @@ public class Quest implements JSON {
         this.completedTaker = false;
     }
 
+    public Quest(String name, String description, String createdBy_id, String takenBy_id, boolean completedTaker, boolean acceptedCreator, String id, int tokens) {
+        this.name = name;
+        this.description = description;
+        this.createdBy_id = createdBy_id;
+        this.takenBy_id = takenBy_id;
+        this.completedTaker = completedTaker;
+        this.acceptedCreator = acceptedCreator;
+        this.id = id;
+        this.tokens = tokens;
+    }
+
     /**
      * @return return the JSON object for the model
      */
-    @Override
     public JSONObject createJSON() {
         JSONObject json = new JSONObject();
 
@@ -60,5 +70,41 @@ public class Quest implements JSON {
 
     public String getCreatedBy() {
         return createdBy_id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setTakenBy_id(String takenBy_id){
+        this.takenBy_id = takenBy_id;
+    }
+
+    public String getCreatedBy_id() {
+        return createdBy_id;
+    }
+
+    public String getTakenBy_id() {
+        return takenBy_id;
+    }
+
+    public boolean isCompletedTaker() {
+        return completedTaker;
+    }
+
+    public boolean isAcceptedCreator() {
+        return acceptedCreator;
+    }
+
+    public void setCompletedTaker(boolean completedTaker) {
+        this.completedTaker = completedTaker;
+    }
+
+    public void setAcceptedCreator(boolean acceptedCreator) {
+        this.acceptedCreator = acceptedCreator;
+    }
+
+    public int getTokens() {
+        return tokens;
     }
 }
