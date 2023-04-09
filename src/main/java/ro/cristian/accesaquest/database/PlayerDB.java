@@ -8,6 +8,7 @@ import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.util.Config;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class PlayerDB implements PlayerDBI {
@@ -99,6 +100,30 @@ public class PlayerDB implements PlayerDBI {
         int res = DataAccess.replaceObject(container, player.createJSON());
         if(res >= 300) throw new Exception("Db error, Status code: " + res);
         return true;
+    }
+
+    /**
+     * Find the top ranked players
+     *
+     * @param amount amount of players to get back
+     * @return the list of top ranked players
+     * @throws Exception if the operation was unsuccessful
+     */
+    @Override
+    public List<JSONObject> findTop(int amount) throws Exception {
+        String sqlQuery = "SELECT TOP @amount * FROM c ORDER BY c.rank DESC";
+        var paramList = new ArrayList<SqlParameter>();
+        paramList.add(new SqlParameter("@amount", amount));
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(sqlQuery, paramList);
+
+        System.out.println("Hel");
+
+        var response = DataAccess.findListObjects(container, sqlQuerySpec);
+
+        if(response == null) throw new Exception("Something went wrong with the db");
+
+        System.out.println(response.size());
+        return response;
     }
 
     /**

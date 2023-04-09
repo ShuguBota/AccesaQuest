@@ -3,6 +3,8 @@ package ro.cristian.accesaquest.database;
 import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.models.Player;
 
+import java.util.List;
+
 public interface PlayerDBI {
     /**
      * Add a player to the database
@@ -49,4 +51,14 @@ public interface PlayerDBI {
      * @throws Exception if the operation was unsuccessful
      */
     boolean replace(Player player) throws Exception;
+
+
+    /**
+     * Find the top ranked players
+     *
+     * @param amount     amount of players to get back
+     * @return           the list of top ranked players
+     * @throws Exception if the operation was unsuccessful
+     */
+    List<JSONObject> findTop(int amount) throws Exception;
 }

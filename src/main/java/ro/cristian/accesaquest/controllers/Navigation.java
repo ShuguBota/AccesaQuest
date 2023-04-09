@@ -22,4 +22,9 @@ public class Navigation {
         Notification.showConfirmationNotification("Logout confirmation", "Log out successful");
         App.getInstance().loadScene("welcome");
     }
+
+    @FXML
+    public void leaderboard(ActionEvent actionEvent) {
+        App.getInstance().loadScene("leaderboard");
+    }
 }

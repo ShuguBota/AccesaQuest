@@ -11,5 +11,6 @@
         </HBox.margin>
     </Button>
     <Button mnemonicParsing="false" onAction="#myProfile" prefHeight="50.0" prefWidth="100.0" styleClass="button-normal" stylesheets="@../style/main.css" text="My Profile" HBox.hgrow="ALWAYS" />
+   <Button mnemonicParsing="false" onAction="#leaderboard" styleClass="button-normal" stylesheets="@../style/main.css" text="Leaderboard" />
     <Button mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="100.0" styleClass="button-normal" stylesheets="@../style/main.css" text="Logout" HBox.hgrow="ALWAYS" />
 </HBox>

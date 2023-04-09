@@ -16,7 +16,13 @@ public class CreateQuest {
 
     @FXML
     public void createQuest(ActionEvent actionEvent) {
-        Quest newQuest = new Quest(nameField.getText(), descriptionField.getText(), (String) App.getInstance().getMyPlayer().get("id"), Integer.parseInt(tokenField.getText()));
+        Quest newQuest;
+        try{
+            newQuest = new Quest(nameField.getText(), descriptionField.getText(), (String) App.getInstance().getMyPlayer().get("id"), Integer.parseInt(tokenField.getText()));
+        } catch(NumberFormatException e){
+            Notification.showErrorNotification("Introduce a number into the tokens field please");
+            return;
+        }
 
         QuestDB questDB = new QuestDB();
         boolean res;

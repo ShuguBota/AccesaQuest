@@ -19,7 +19,6 @@ public class DataAccess {
     private static final CosmosDatabase db = client.getDatabase(Config.databaseID); //db info
     private static final CosmosContainer players_container = db.getContainer(Config.playersContainer);
     private static final CosmosContainer quests_container = db.getContainer(Config.questsContainer);
-    private static final CosmosContainer badges_container = db.getContainer(Config.badgesContainer);
 
     /**
      * Find the container given the String
@@ -32,7 +31,6 @@ public class DataAccess {
 
         if(container.equals("players")) queryContainer = players_container;
         if(container.equals("quests")) queryContainer = quests_container;
-        if(container.equals("badges")) queryContainer = badges_container;
 
         return queryContainer;
     }

@@ -258,7 +258,7 @@ public class QuestDB implements QuestDBI{
         if(quest.getTakenBy_id() != null) throw new Exception("This quest is already taken by someone you can't cancel it anymore");
 
         //Allow only the creator to cancel it
-        if(!quest.getCreatedBy_id().equals(questId)) throw new Exception("You are not the creator of the quest");
+        if(!quest.getCreatedBy_id().equals(playerId)) throw new Exception("You are not the creator of the quest");
 
         //If all the checks pass then delete the quest and restore his tokens
         var resultCreator = DataAccess.findObject(playersContainer, queryPlayerById(playerId));
@@ -341,6 +341,6 @@ public class QuestDB implements QuestDBI{
     }
 
     private String loadBadge(String fileName){
-        return App.class.getResource("badges/" + fileName + ".png").toString();
+        return Objects.requireNonNull(App.class.getResource("badges/" + fileName + ".png")).toString();
     }
 }

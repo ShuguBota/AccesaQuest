@@ -33,8 +33,8 @@ public class PersonalQuests implements Initializable {
 
         String myId = (String) App.getInstance().getMyPlayer().get("id");
 
-        List<JSONObject> createdQuests = null;
-        List<JSONObject> acceptedQuests = null;
+        List<JSONObject> createdQuests;
+        List<JSONObject> acceptedQuests;
         List<JSONObject> personalQuests = new ArrayList<>();
         try {
             createdQuests = questDB.getCreatedQuests(myId);
@@ -133,12 +133,15 @@ public class PersonalQuests implements Initializable {
                 System.out.println("Button pressed for the quest" + quest.get("name"));
 
                 try {
-                    questDB.completeQuest(myId, (String) quest.get("id"));
-
-                    if(finalMyPlayerCreated && quest.get("takenBy_id") == null)
+                    if(finalMyPlayerCreated && quest.get("takenBy_id") == null){
+                        questDB.cancelQuest(myId, (String) quest.get("id"));
                         Notification.showConfirmationNotification("Quest confirmation", "Quest: " + quest.get("name") + " canceled");
-                    else
+                    }
+                    else{
+                        questDB.completeQuest(myId, (String) quest.get("id"));
                         Notification.showConfirmationNotification("Quest confirmation", "Quest: " + quest.get("name") + " set as completed");
+                    }
+
                     App.getInstance().loadScene("profile");
                 } catch (Exception e) {
                     Notification.showErrorNotification(e.getMessage());
