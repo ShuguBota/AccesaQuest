@@ -28,7 +28,7 @@
                </VBox.margin>
             </TextField>
             <Label alignment="CENTER" prefHeight="32.0" prefWidth="134.0" styleClass="label-small" stylesheets="@../style/main.css" text="Description" VBox.vgrow="ALWAYS" />
-            <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Description" styleClass="textArea-normal" stylesheets="@../style/main.css">
+            <TextArea fx:id="descriptionField" prefHeight="200.0" prefWidth="200.0" promptText="Description" styleClass="textArea-normal" stylesheets="@../style/main.css">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>

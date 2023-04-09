@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.Profile">
-   <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <Label fx:id="usernameLabel" alignment="CENTER" prefHeight="30.0" prefWidth="240.0" text="Label"/>
-         <Label fx:id="rankLabel" alignment="CENTER" contentDisplay="TOP" prefHeight="30.0" prefWidth="240.0"
-                text="Label"/>
-         <Label fx:id="tokensLabel" alignment="CENTER" prefHeight="30.0" prefWidth="240.0" text="Label"/>
-      </VBox>
-   </center>
-   <top>
-      <fx:include source="navigation.fxml" BorderPane.alignment="TOP_CENTER" />
-   </top>
-</BorderPane>
+<GridPane hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-color" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.Profile">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="93.60001220703126" minHeight="10.0" prefHeight="67.19999389648437" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="75.99999694824218" minHeight="0.0" prefHeight="74.40000610351562" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="833.6000122070312" minHeight="10.0" prefHeight="759.7999969482422" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+       <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="navigation.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+      <HBox alignment="CENTER" prefHeight="102.0" prefWidth="1379.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label fx:id="usernameLabel" alignment="CENTER" prefHeight="30.0" prefWidth="240.0" styleClass="label-small" stylesheets="@../style/main.css" text="Label" />
+            <Label fx:id="rankLabel" alignment="CENTER" contentDisplay="TOP" prefHeight="42.0" prefWidth="240.0" styleClass="label-small" stylesheets="@../style/main.css" text="Label" />
+            <Label fx:id="tokensLabel" alignment="CENTER" prefHeight="30.0" prefWidth="240.0" styleClass="label-small" stylesheets="@../style/main.css" text="Label" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+          <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="badges.fxml" HBox.hgrow="SOMETIMES" />
+          <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="personal_quests.fxml" HBox.hgrow="SOMETIMES" />
+         <opaqueInsets>
+            <Insets bottom="10.0" top="10.0" />
+         </opaqueInsets>
+      </HBox>
+   </children>
+</GridPane>

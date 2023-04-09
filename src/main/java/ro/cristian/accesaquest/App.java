@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
+import ro.cristian.accesaquest.database.PlayerDB;
 import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.util.Notification;
 
@@ -20,6 +21,8 @@ public class App extends Application {
     private static App appInstance;
 
     private Stage primaryWindow;
+
+    private Stage createQuestWindow;
     private Scene scene;
 
     private JSONObject myPlayer = null;
@@ -88,6 +91,18 @@ public class App extends Application {
             newScene.getStylesheets().add(App.class.getResource("style/main.css").toExternalForm());
             getStage().setScene(newScene);
             setDimensions();
+
+            //Update my player everytime he changes the scene, and he is logged in
+            if(getMyPlayer() != null)
+            {
+                try{
+                    PlayerDB playerDB = new PlayerDB();
+                    var playerJSON = playerDB.findPlayerById((String) getMyPlayer().get("id"));
+                    setMyPlayer(playerJSON);
+                } catch (Exception e) {
+                    Notification.showErrorNotification(e.getMessage());
+                }
+            }
         } catch (IOException e){
             logger.info("The login fxml file couldn't be loaded");
             e.printStackTrace();
@@ -127,15 +142,19 @@ public class App extends Application {
 
     public void openWindow(String title, String fxmlFile, double size) {
         try {
-            Stage window = new Stage();
+            createQuestWindow = new Stage();
             final int screenSize = (int) Math.round(App.getScreenHeight() * size);
             Parent parent = App.loadFXML(fxmlFile);
             Scene scene = new Scene(parent, screenSize, screenSize);
-            window.setTitle(title);
-            window.setScene(scene);
-            window.show();
+            createQuestWindow.setTitle(title);
+            createQuestWindow.setScene(scene);
+            createQuestWindow.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void closeWindow() {
+        createQuestWindow.close();
     }
 }

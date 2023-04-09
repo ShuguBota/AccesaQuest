@@ -102,3 +102,13 @@
     -fx-prompt-text-alignment: center;
     -fx-wrap-text: true;
 }
+
+.notifications {
+    -fx-background: #2A363B;
+    -fx-text-fill: #2A363B;;
+    -fx-font-family: "Flamenco";
+    -fx-font-weight: 400;
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}

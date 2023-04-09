@@ -2,6 +2,7 @@ package ro.cristian.accesaquest.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import ro.cristian.accesaquest.App;
 
 import java.util.logging.Logger;
@@ -35,6 +36,11 @@ public class Notification {
         alert.setTitle("Confirmation");
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
+
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(App.class.getResource("style/main.css").toExternalForm());
+        dialogPane.getStyleClass().add("notifications");
+
         alert.showAndWait();
 
         ButtonType type = alert.getResult();
@@ -51,6 +57,9 @@ public class Notification {
         alert.setTitle(title);
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(App.class.getResource("style/main.css").toExternalForm());
+        dialogPane.getStyleClass().add("notifications");
         logger.info("Showing alert" + contentText);
         return alert;
     }

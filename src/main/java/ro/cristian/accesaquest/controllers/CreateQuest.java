@@ -30,6 +30,7 @@ public class CreateQuest {
 
         if(res){
             Notification.showConfirmationNotification("Quest confirmation", "Quest created successfully");
+            App.getInstance().closeWindow();
         }
     }
 }

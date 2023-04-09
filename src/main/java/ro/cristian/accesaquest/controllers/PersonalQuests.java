@@ -8,9 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.App;
 import ro.cristian.accesaquest.database.PlayerDB;
@@ -18,10 +19,11 @@ import ro.cristian.accesaquest.database.QuestDB;
 import ro.cristian.accesaquest.util.Notification;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class IncompleteQuests implements Initializable {
+public class PersonalQuests implements Initializable {
     @FXML public ScrollPane scrollPane;
 
     @Override
@@ -31,26 +33,32 @@ public class IncompleteQuests implements Initializable {
 
         String myId = (String) App.getInstance().getMyPlayer().get("id");
 
-        List<JSONObject> questsIncomplete = null;
+        List<JSONObject> createdQuests = null;
+        List<JSONObject> acceptedQuests = null;
+        List<JSONObject> personalQuests = new ArrayList<>();
         try {
-            questsIncomplete = questDB.getIncompleteQuests(myId,5);
+            createdQuests = questDB.getCreatedQuests(myId);
+            acceptedQuests = questDB.getAcceptedQuests(myId);
+
+            if(createdQuests != null) personalQuests.addAll(createdQuests);
+            if(acceptedQuests != null) personalQuests.addAll(acceptedQuests);
         } catch (Exception e) {
             Notification.showErrorNotification(e.getMessage());
         }
 
-        if(questsIncomplete == null) return;
+        if(personalQuests.isEmpty()) return;
 
         VBox primaryVBox = new VBox();
         primaryVBox.setSpacing(30);
 
-        Label availableQuestsLabel = new Label("Available Quests");
-        availableQuestsLabel.getStyleClass().add("title");
-        availableQuestsLabel.setAlignment(Pos.TOP_CENTER);
+        Label personalQuestsLabel = new Label("Personal Quests");
+        personalQuestsLabel.getStyleClass().add("title");
+        personalQuestsLabel.setAlignment(Pos.TOP_CENTER);
         primaryVBox.setAlignment(Pos.TOP_CENTER);
-        primaryVBox.getChildren().add(availableQuestsLabel);
+        primaryVBox.getChildren().add(personalQuestsLabel);
         primaryVBox.setAlignment(Pos.TOP_LEFT);
 
-        for(var quest : questsIncomplete){
+        for(var quest : personalQuests) {
             VBox questVBox = new VBox();
             questVBox.getStyleClass().add("background-single-quest");
             questVBox.setPadding(new Insets(0, 10, 0, 10));
@@ -76,42 +84,73 @@ public class IncompleteQuests implements Initializable {
             detailsHBox.getChildren().add(leftFakeLabel);
             HBox.setHgrow(leftFakeLabel, Priority.ALWAYS);
 
-            JSONObject playerCreator = null;
+            boolean myPlayerCreated = false;
+            JSONObject otherPlayer = null;
             try {
-                playerCreator = playerDB.findPlayerById((String) quest.get("createdBy_id"));
+                if(myId.equals(quest.get("createdBy_id"))){
+                    if(quest.get("takenBy_id") != null)
+                        otherPlayer = playerDB.findPlayerById((String) quest.get("takenBy_id"));
+                    myPlayerCreated = true;
+                }
+                else {
+                    otherPlayer = playerDB.findPlayerById((String) quest.get("createdBy_id"));
+                }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Notification.showErrorNotification(e.getMessage());
             }
-            Label createdByLabel = new Label((String) playerCreator.get("username"));
-            createdByLabel.getStyleClass().add("label-quest");
 
-            detailsHBox.getChildren().add(createdByLabel);
+            if(otherPlayer != null) {
+                Label otherPlayerLabel = new Label((String) otherPlayer.get("username"));
+                otherPlayerLabel.getStyleClass().add("label-quest");
+                detailsHBox.getChildren().add(otherPlayerLabel);
+            }
 
             Label rightFakeLabel = new Label();
             rightFakeLabel.setMaxWidth(Integer.MAX_VALUE);
             HBox.setHgrow(rightFakeLabel, Priority.ALWAYS);
             detailsHBox.getChildren().add(rightFakeLabel);
 
-            Button button = new Button("Accept quest");
-            button.getStyleClass().add("button-accept");
-            button.setTextAlignment(TextAlignment.CENTER);
+            Button button = new Button();
+            if(myPlayerCreated && quest.get("takenBy_id") == null)
+                button.setText("Cancel");
+            else{
+                if(myId.equals(quest.get("createdBy_id")) && !(boolean) quest.get("acceptedCreator"))
+                    button.setText("Complete");
+                else if(myId.equals(quest.get("takenBy_id")) && !(boolean) quest.get("completedTaker"))
+                    button.setText("Complete");
+                else {
+                    button.setDisable(true); //Not show it if the action is done in the player's side
+                    button.setVisible(false);
+                    Label completedLabel = new Label("Waiting for other player");
+                    completedLabel.getStyleClass().add("label-quest");
+                    detailsHBox.getChildren().add(completedLabel);
+                }
+            }
 
-            button.setOnMouseClicked(actionEvent -> {
+
+            boolean finalMyPlayerCreated = myPlayerCreated;
+            button.setOnMouseClicked((actionEvent) -> {
                 System.out.println("Button pressed for the quest" + quest.get("name"));
 
                 try {
-                    questDB.takeQuest(myId, (String) quest.get("id"));
+                    questDB.completeQuest(myId, (String) quest.get("id"));
 
-                    Notification.showConfirmationNotification("Quest accepted", "Quest: " + quest.get("name") + " accepted");
-                    App.getInstance().loadScene("home");
+                    if(finalMyPlayerCreated && quest.get("takenBy_id") == null)
+                        Notification.showConfirmationNotification("Quest confirmation", "Quest: " + quest.get("name") + " canceled");
+                    else
+                        Notification.showConfirmationNotification("Quest confirmation", "Quest: " + quest.get("name") + " set as completed");
+                    App.getInstance().loadScene("profile");
                 } catch (Exception e) {
                     Notification.showErrorNotification(e.getMessage());
                 }
             });
 
-            button.setAlignment(Pos.CENTER_RIGHT);
+            //button.setAlignment(Pos.CENTER_RIGHT);
+            button.getStyleClass().add("button-accept");
+            button.setTextAlignment(TextAlignment.CENTER);
 
-            detailsHBox.getChildren().add(button);
+            if(!button.getText().isEmpty())
+                detailsHBox.getChildren().add(button);
 
             detailsHBox.getStyleClass().add("background-single-quest");
             questVBox.getChildren().add(detailsHBox);
