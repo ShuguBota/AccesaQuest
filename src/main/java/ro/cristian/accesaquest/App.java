@@ -34,9 +34,11 @@ public class App extends Application {
         primaryWindow.setTitle("Accesa Quest");
         primaryWindow.setScene(scene);
 
-        primaryWindow.setWidth(getScreenWidth()/1.5);
-        primaryWindow.setHeight(getScreenHeight()/1.5);
+        primaryWindow.setWidth(getScreenWidth());
+        primaryWindow.setHeight(getScreenHeight());
         setDimensions();
+
+        scene.getStylesheets().add(App.class.getResource("style/main.css").toExternalForm());
 
         setOnExit();
     }
@@ -82,9 +84,10 @@ public class App extends Application {
 
     public void loadScene(String fileName){
         try {
-            Scene loginScene = new Scene(App.loadFXML(fileName));
-            App.getInstance().getStage().setScene(loginScene);
-            App.getInstance().setDimensions();
+            Scene newScene = new Scene(App.loadFXML(fileName));
+            newScene.getStylesheets().add(App.class.getResource("style/main.css").toExternalForm());
+            getStage().setScene(newScene);
+            setDimensions();
         } catch (IOException e){
             logger.info("The login fxml file couldn't be loaded");
             e.printStackTrace();

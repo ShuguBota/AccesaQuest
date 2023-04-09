@@ -66,10 +66,10 @@ public class QuestDB implements QuestDBI{
      */
     @Override
     public List<JSONObject> getIncompleteQuests(String playerId, int amount) throws Exception {
-        String sqlQuery = "SELECT * FROM c WHERE c.createdBy_id != @playerId AND c.taken = @taken";
+        String sqlQuery = "SELECT * FROM c WHERE c.createdBy_id != @playerId AND c.takenBy_id = @takenId";
         var paramList = new ArrayList<SqlParameter>();
         paramList.add(new SqlParameter("@playerId", playerId));
-        paramList.add(new SqlParameter("@taken", false));
+        paramList.add(new SqlParameter("@takenId", null));
         var querySpec = new SqlQuerySpec(sqlQuery, paramList);
         var response = DataAccess.findListObjects(container, querySpec);
 
@@ -77,10 +77,15 @@ public class QuestDB implements QuestDBI{
 
         int size = response.size();
 
+        //Don't try to get random stuff when it's not feasible
+        if(size <= amount){
+            return response;
+        }
+
         //Make a random set of values to get random quests from the response
         Set<Integer> randomSet = new HashSet<>();
         Random random = new Random();
-        while(randomSet.size() < amount || randomSet.size() == size)
+        while(randomSet.size() < amount - 1 || randomSet.size() == size - 1)
             randomSet.add(random.nextInt(size - 1));
 
         List<JSONObject> listDisplay = new ArrayList<>();

@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.CreateQuest">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-color" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.CreateQuest">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Create Quest">
+            <Label styleClass="title" stylesheets="@../style/main.css" text="Create Quest">
                <font>
                   <Font size="24.0" />
                </font>
@@ -21,25 +21,25 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </Label>
-            <Label alignment="CENTER" text="Name of the quest" />
-            <TextField fx:id="nameField">
+            <Label alignment="CENTER" styleClass="label-small" stylesheets="@../style/main.css" text="Name of the quest" />
+            <TextField fx:id="nameField" promptText="Quest Name" styleClass="textField-normal" stylesheets="@../style/main.css">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </TextField>
-            <Label alignment="CENTER" prefHeight="18.0" prefWidth="70.0" text="Description" VBox.vgrow="ALWAYS" />
-            <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0">
+            <Label alignment="CENTER" prefHeight="32.0" prefWidth="134.0" styleClass="label-small" stylesheets="@../style/main.css" text="Description" VBox.vgrow="ALWAYS" />
+            <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Description" styleClass="textArea-normal" stylesheets="@../style/main.css">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </TextArea>
-            <Label text="Tokens Reward" />
-            <TextField fx:id="tokenField">
+            <Label styleClass="label-small" stylesheets="@../style/main.css" text="Tokens Reward" />
+            <TextField fx:id="tokenField" promptText="Tokens" styleClass="textField-normal" stylesheets="@../style/main.css">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" onAction="#createQuest" text="Create Quest" />
+            <Button mnemonicParsing="false" onAction="#createQuest" prefHeight="54.0" prefWidth="235.0" styleClass="button-quest" stylesheets="@../style/main.css" text="Create Quest" />
          </children>
          <BorderPane.margin>
             <Insets />

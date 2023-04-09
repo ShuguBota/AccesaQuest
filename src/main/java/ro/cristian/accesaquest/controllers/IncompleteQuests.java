@@ -2,16 +2,17 @@ package ro.cristian.accesaquest.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.TextFlow;
 import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.App;
+import ro.cristian.accesaquest.database.PlayerDB;
 import ro.cristian.accesaquest.database.QuestDB;
 import ro.cristian.accesaquest.util.Notification;
 
@@ -25,10 +26,13 @@ public class IncompleteQuests implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         QuestDB questDB = new QuestDB();
-        String username = (String) App.getInstance().getMyPlayer().get("username");
+        PlayerDB playerDB = new PlayerDB();
+
+        String myId = (String) App.getInstance().getMyPlayer().get("id");
+
         List<JSONObject> questsIncomplete = null;
         try {
-            questsIncomplete = questDB.getIncompleteQuests(username,5);
+            questsIncomplete = questDB.getIncompleteQuests(myId,5);
         } catch (Exception e) {
             Notification.showErrorNotification(e.getMessage());
         }
@@ -36,33 +40,86 @@ public class IncompleteQuests implements Initializable {
         if(questsIncomplete == null) return;
 
         VBox primaryVBox = new VBox();
-        for(var quest : questsIncomplete){
-            VBox vBox = new VBox();
-            HBox hBox = new HBox();
+        primaryVBox.setSpacing(30);
 
-            Label name = new Label((String) quest.get("name"));
-            hBox.getChildren().add(name);
+        for(var quest : questsIncomplete){
+            VBox questVBox = new VBox();
+            questVBox.getStyleClass().add("background-single-quest");
+            questVBox.setPadding(new Insets(0, 10, 0, 10));
+
+            HBox detailsHBox = new HBox();
+            detailsHBox.setSpacing(10);
+
+            Label nameLabel = new Label((String) quest.get("name"));
+            nameLabel.getStyleClass().add("label-quest");
+            detailsHBox.getChildren().add(nameLabel);
+
+            Label tokensLeftFakeLabel = new Label();
+            tokensLeftFakeLabel.setMaxWidth(Integer.MAX_VALUE);
+            HBox.setHgrow(tokensLeftFakeLabel, Priority.ALWAYS);
+            detailsHBox.getChildren().add(tokensLeftFakeLabel);
+
+            Label tokensLabel = new Label("Tokens: " + quest.get("tokens"));
+            tokensLabel.getStyleClass().add("label-quest");
+            detailsHBox.getChildren().add(tokensLabel);
+
+            Label leftFakeLabel = new Label();
+            leftFakeLabel.setMaxWidth(Integer.MAX_VALUE);
+            detailsHBox.getChildren().add(leftFakeLabel);
+            HBox.setHgrow(leftFakeLabel, Priority.ALWAYS);
+
+            JSONObject playerCreator = null;
+            try {
+                playerCreator = playerDB.findPlayerById((String) quest.get("createdBy_id"));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            Label createdByLabel = new Label((String) playerCreator.get("username"));
+            createdByLabel.getStyleClass().add("label-quest");
+
+            detailsHBox.getChildren().add(createdByLabel);
+
+            Label rightFakeLabel = new Label();
+            rightFakeLabel.setMaxWidth(Integer.MAX_VALUE);
+            HBox.setHgrow(rightFakeLabel, Priority.ALWAYS);
+            detailsHBox.getChildren().add(rightFakeLabel);
 
             Button button = new Button("Accept quest");
-            button.setOnAction(actionEvent -> {
-                //TODO accept the quest
+            button.getStyleClass().add("button-accept");
+
+            button.setOnMouseClicked(actionEvent -> {
                 System.out.println("Button pressed for the quest" + quest.get("name"));
+
+                try {
+                    questDB.takeQuest((String) App.getInstance().getMyPlayer().get("id"), (String) quest.get("id"));
+                } catch (Exception e) {
+                    Notification.showErrorNotification(e.getMessage());
+                }
+
+                Notification.showConfirmationNotification("Quest accepted", "Quest: " + quest.get("name") + " accepted");
+                App.getInstance().loadScene("home");
             });
-            hBox.getChildren().add(button);
 
-            vBox.getChildren().add(hBox);
+            button.setAlignment(Pos.CENTER_RIGHT);
 
-            TextArea textArea = new TextArea((String) quest.get("description"));
-            textArea.setWrapText(true);
-            textArea.setEditable(false);
+            detailsHBox.getChildren().add(button);
 
-            vBox.getChildren().add(textArea);
+            detailsHBox.getStyleClass().add("background-single-quest");
+            questVBox.getChildren().add(detailsHBox);
 
-            primaryVBox.getChildren().add(vBox);
+            TextArea textAreaDescription = new TextArea((String) quest.get("description"));
+            textAreaDescription.setWrapText(true);
+            textAreaDescription.setEditable(false);
+            textAreaDescription.getStyleClass().add("textArea-normal");
+
+            questVBox.getChildren().add(textAreaDescription);
+
+            primaryVBox.getChildren().add(questVBox);
         }
 
-        Pane pane = new Pane();
-        pane.getChildren().add(primaryVBox);
-        scrollPane.setContent(pane);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        primaryVBox.setPrefHeight(350);
+        scrollPane.setContent(primaryVBox);
     }
 }

@@ -1,0 +1,104 @@
+@font-face {
+    font-family: Flamenco;
+    src: url("Flamenco-Regular.ttf");
+}
+
+.background-color {
+    -fx-background: #2A363B;
+}
+
+.background-quests {
+    -fx-background: #FECEA8;
+}
+
+.background-quests .content {
+    -fx-background-radius: 15;
+}
+
+.background-single-quest {
+    -fx-background-color: #FF847C;
+    -fx-background: #FF847C;
+    -fx-background-radius: 15;
+}
+
+.title {
+    -fx-text-fill: #E84A5F;
+    -fx-font-family: "Flamenco";
+    -fx-font-weight: 400;
+    -fx-font-size: 48px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.button-normal, .button-quest, .button-accept {
+    -fx-pref-height: 50px;
+    -fx-pref-width: 200px;
+    -fx-background-color: #99B998;
+    -fx-font-family: "Flamenco";
+    -fx-font-weight: 400;
+    -fx-font-size: 30px;
+    -fx-font-color: #2A363B;
+    /*-fx-alignment: center;*/
+    -fx-background-radius: 15;
+}
+
+.button-quest {
+    -fx-pref-width: 250px;
+}
+
+.button-accept {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 100px;
+    -fx-font-size: 15px;
+}
+
+.label-small {
+    -fx-text-fill: #FECEA8;
+    -fx-font-family: "Flamenco";
+    -fx-font-weight: 400;
+    -fx-font-size: 28px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.label-quest {
+    -fx-text-fill: #2A363B;;
+    -fx-font-family: "Flamenco";
+    -fx-font-weight: 400;
+    -fx-font-size: 28px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.textField-normal {
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-font-family: "Flamenco";
+    -fx-text-fill: #FECEA8;
+    -fx-prompt-text-fill: #FECEA8;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-background-color: #E84A5F;
+    -fx-background-radius: 15;
+}
+
+.textArea-normal {
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-font-family: "Flamenco";
+    -fx-text-fill: #FECEA8;
+    -fx-prompt-text-fill: #FECEA8;
+    -fx-prompt-text-position: center;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-background-color: #E84A5F;
+    -fx-background-radius: 15;
+    -fx-wrap-text: true;
+}
+
+.textArea-normal .content {
+    -fx-background-color: #E84A5F;
+    -fx-background-radius: 15;
+    -fx-prompt-text-alignment: center;
+    -fx-wrap-text: true;
+}

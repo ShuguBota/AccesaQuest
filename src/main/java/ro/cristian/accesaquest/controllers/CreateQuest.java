@@ -10,13 +10,13 @@ import ro.cristian.accesaquest.models.Quest;
 import ro.cristian.accesaquest.util.Notification;
 
 public class CreateQuest {
-    @FXML public TextArea descriptionArea;
     @FXML public TextField nameField;
+    @FXML public TextArea descriptionField;
     @FXML public TextField tokenField;
 
     @FXML
     public void createQuest(ActionEvent actionEvent) {
-        Quest newQuest = new Quest(nameField.getText(), descriptionArea.getText(), (String) App.getInstance().getMyPlayer().get("id"), Integer.parseInt(tokenField.getText()));
+        Quest newQuest = new Quest(nameField.getText(), descriptionField.getText(), (String) App.getInstance().getMyPlayer().get("id"), Integer.parseInt(tokenField.getText()));
 
         QuestDB questDB = new QuestDB();
         boolean res;
