@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.App;
 import ro.cristian.accesaquest.models.Player;
 import ro.cristian.accesaquest.util.Config;
+import ro.cristian.accesaquest.util.Security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,10 @@ public class PlayerDB implements PlayerDBI {
         JSONObject resUsername = DataAccess.findObject(container, queryOnUsername(player.getUsername()));
         if(resUsername != null) throw new Exception("Username already in use");
 
+        //Hash the password
+        var hashedPassword = Security.generateStorngPasswordHash(player.getPassword());
+        player.setPassword(hashedPassword);
+
         JSONObject json = player.createJSON();
         DataAccess.createObject(container, json);
 
@@ -52,8 +57,12 @@ public class PlayerDB implements PlayerDBI {
 
         //Email not found in the db
         if(res == null) throw new Exception("Email not found in the db");
+
+        //Hash the password
+        password = Security.generateStorngPasswordHash(password);
+
         //Check if password match
-        if(!res.get("password").equals(password)) throw new Exception("Incorrect credentials");
+        if(Security.validatePassword((String) res.get("password"), password)) throw new Exception("Incorrect credentials");
 
         //Set the myPlayer
         if(App.getInstance() != null) App.getInstance().setMyPlayer(res);
@@ -116,13 +125,10 @@ public class PlayerDB implements PlayerDBI {
         paramList.add(new SqlParameter("@amount", amount));
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(sqlQuery, paramList);
 
-        System.out.println("Hel");
-
         var response = DataAccess.findListObjects(container, sqlQuerySpec);
 
         if(response == null) throw new Exception("Something went wrong with the db");
 
-        System.out.println(response.size());
         return response;
     }
 

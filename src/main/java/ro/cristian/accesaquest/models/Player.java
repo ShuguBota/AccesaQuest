@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Player {
     private String username;
     private final String email;
-    private final String password;
+    private String password;
     private Integer tokens;
     private List<String> badges_id;
     private Integer rank;
@@ -177,5 +177,9 @@ public class Player {
 
     public List<String> getBadges(){
         return this.badges_id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
