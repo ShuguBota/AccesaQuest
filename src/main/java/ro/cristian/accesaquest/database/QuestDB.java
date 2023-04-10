@@ -85,8 +85,8 @@ public class QuestDB implements QuestDBI{
         //Make a random set of values to get random quests from the response
         Set<Integer> randomSet = new HashSet<>();
         Random random = new Random();
-        while(randomSet.size() < amount - 1 || randomSet.size() == size - 1)
-            randomSet.add(random.nextInt(size - 1));
+        while(randomSet.size() < amount || randomSet.size() == size)
+            randomSet.add(random.nextInt(size));
 
         List<JSONObject> listDisplay = new ArrayList<>();
         for(var pos : randomSet)
