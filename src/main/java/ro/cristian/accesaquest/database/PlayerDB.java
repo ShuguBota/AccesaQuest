@@ -58,11 +58,8 @@ public class PlayerDB implements PlayerDBI {
         //Email not found in the db
         if(res == null) throw new Exception("Email not found in the db");
 
-        //Hash the password
-        password = Security.generateStorngPasswordHash(password);
-
         //Check if password match
-        if(Security.validatePassword((String) res.get("password"), password)) throw new Exception("Incorrect credentials");
+        if(!Security.validatePassword(password, (String) res.get("password"))) throw new Exception("Incorrect credentials");
 
         //Set the myPlayer
         if(App.getInstance() != null) App.getInstance().setMyPlayer(res);
