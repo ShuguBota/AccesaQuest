@@ -41,6 +41,7 @@ public class IncompleteQuests implements Initializable {
         if(questsIncomplete == null) return;
 
         VBox primaryVBox = new VBox();
+        primaryVBox.setPadding(new Insets(20, 15, 20, 15));
         primaryVBox.setSpacing(30);
 
         Label availableQuestsLabel = new Label("Available Quests");
@@ -53,7 +54,7 @@ public class IncompleteQuests implements Initializable {
         for(var quest : questsIncomplete){
             VBox questVBox = new VBox();
             questVBox.getStyleClass().add("background-single-quest");
-            questVBox.setPadding(new Insets(0, 10, 0, 10));
+            questVBox.setPadding(new Insets(0, 10, 5, 10));
 
             HBox detailsHBox = new HBox();
             detailsHBox.setSpacing(10);

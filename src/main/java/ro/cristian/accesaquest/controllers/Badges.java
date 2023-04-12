@@ -8,7 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
 import org.json.simple.JSONObject;
 import ro.cristian.accesaquest.App;
@@ -27,56 +30,59 @@ public class Badges implements Initializable {
         Player myPlayer = JSON.deserializeJSONPlayer(App.getInstance().getMyPlayer());
 
         VBox primaryVBox = new VBox();
+        primaryVBox.setPadding(new Insets(20, 15, 20, 15));
+        primaryVBox.getStyleClass().add("background-vbox-scroll-pane");
         primaryVBox.setSpacing(30);
 
         Label badgesLabel = new Label("Badges");
-        badgesLabel.getStyleClass().add("title");
+        badgesLabel.getStyleClass().add("subtitle");
         badgesLabel.setAlignment(Pos.TOP_CENTER);
         primaryVBox.setAlignment(Pos.TOP_CENTER);
         primaryVBox.getChildren().add(badgesLabel);
         primaryVBox.setAlignment(Pos.TOP_LEFT);
 
-        for(var badge : myPlayer.getBadges()){
-            String completedBadge = "You have completed ";
-            String completedTakenBadge = " taken quests";
+        if(myPlayer.getBadges() != null) {
+            for (var badge : myPlayer.getBadges()) {
+                String completedBadge = "You have completed ";
+                String completedTakenBadge = " taken quest";
 
-            String completedCreatedBadge = " created quest";
+                String completedCreatedBadge = " created quest";
 
-            VBox badgeVBox = new VBox();
-            badgeVBox.getStyleClass().add("background-single-quest");
-            badgeVBox.setPadding(new Insets(0, 10, 0, 10));
+                VBox badgeVBox = new VBox();
+                badgeVBox.getStyleClass().add("background-badge");
+                badgeVBox.setPadding(new Insets(0, 10, 0, 10));
+                Image image = new Image(App.class.getResource("badges/" + badge).toString());
+                ImageView imageView = new ImageView(image);
+                imageView.setFitHeight(100);
+                imageView.setFitWidth(100);
+                badgeVBox.setAlignment(Pos.CENTER);
+                badgeVBox.getChildren().add(imageView);
 
-            Image image = new Image(badge);
-            ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
-            badgeVBox.setAlignment(Pos.CENTER);
-            badgeVBox.getChildren().add(imageView);
+                Label descriptionLabel = new Label();
+                descriptionLabel.getStyleClass().add("label-badge");
+                String code = "";
 
-            Label descriptionLabel = new Label();
-            descriptionLabel.getStyleClass().add("label-quest");
-            String code = "";
+                if (badge.contains("1")) code = "1";
+                if (badge.contains("2")) code = "5";
+                if (badge.contains("3")) code = "10";
+                if (badge.contains("4")) code = "15";
+                if (badge.contains("5")) code = "20";
 
-            if(badge.contains("1")) code = "1";
-            if(badge.contains("2")) code = "5";
-            if(badge.contains("3")) code = "10";
-            if(badge.contains("4")) code = "15";
-            if(badge.contains("5")) code = "20";
+                if (badge.contains("Taken") && badge.contains("1"))
+                    descriptionLabel.setText(completedBadge + code + completedTakenBadge);
+                if (badge.contains("Taken") && !badge.contains("1"))
+                    descriptionLabel.setText(completedBadge + code + completedTakenBadge + "s");
+                if (badge.contains("Created") && badge.contains("1"))
+                    descriptionLabel.setText(completedBadge + code + completedCreatedBadge);
+                if (badge.contains("Created") && !badge.contains("1"))
+                    descriptionLabel.setText(completedBadge + code + completedCreatedBadge + "s");
 
-            if(badge.contains("Taken") && badge.contains("1"))
-                descriptionLabel.setText(completedBadge + code + completedTakenBadge);
-            if(badge.contains("Taken") && !badge.contains("1"))
-                descriptionLabel.setText(completedBadge + code + completedTakenBadge + "s");
-            if(badge.contains("Created") && badge.contains("1"))
-                descriptionLabel.setText(completedBadge + code + completedCreatedBadge);
-            if(badge.contains("Created") && !badge.contains("1"))
-                descriptionLabel.setText(completedBadge + code + completedCreatedBadge + "s");
+                descriptionLabel.setTextAlignment(TextAlignment.CENTER);
+                descriptionLabel.setAlignment(Pos.CENTER);
+                badgeVBox.getChildren().add(descriptionLabel);
 
-            descriptionLabel.setTextAlignment(TextAlignment.CENTER);
-            descriptionLabel.setAlignment(Pos.CENTER);
-            badgeVBox.getChildren().add(descriptionLabel);
-
-            primaryVBox.getChildren().add(badgeVBox);
+                primaryVBox.getChildren().add(badgeVBox);
+            }
         }
 
         scrollPane.setFitToHeight(true);

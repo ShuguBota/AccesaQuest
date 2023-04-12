@@ -25,16 +25,17 @@ public class Login {
             res = playerDB.login(emailField.getText(), passwordField.getText());
         } catch (Exception e) {
             Notification.showErrorNotification(e.getMessage());
-        }
-
-        if(!res) {
-            Notification.showErrorNotification("Incorrect credentials");
             emailField.clear();
             passwordField.clear();
+            return;
         }
-        else{
-            Notification.showConfirmationNotification("Login Confirmation", "Logged in successfully");
-            App.getInstance().loadScene("profile");
-        }
+
+        Notification.showConfirmationNotification("Login Confirmation", "Logged in successfully");
+        App.getInstance().loadScene("profile");
+    }
+
+    @FXML
+    private void back(ActionEvent actionEvent) {
+        App.getInstance().loadScene("welcome");
     }
 }

@@ -1,6 +1,7 @@
 package ro.cristian.accesaquest.util;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import ro.cristian.accesaquest.App;
@@ -44,6 +45,8 @@ public class Notification {
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(Objects.requireNonNull(App.class.getResource("style/main.css")).toExternalForm());
         dialogPane.getStyleClass().add("notifications");
+        ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okButton);
         logger.info("Showing alert" + contentText);
         return alert;
     }

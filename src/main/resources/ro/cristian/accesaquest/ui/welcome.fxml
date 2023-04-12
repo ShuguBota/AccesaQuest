@@ -7,8 +7,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-color" stylesheets="@../style/main.css" vgap="100.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.Welcome">
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="gunmetal-background-color" stylesheets="@../style/main.css" vgap="100.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.cristian.accesaquest.controllers.Welcome">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -31,17 +32,25 @@
       </HBox>
       <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginClicked" styleClass="button-normal" stylesheets="@../style/main.css" text="Login" textAlignment="CENTER" />
             <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#registerClicked" styleClass="button-normal" stylesheets="@../style/main.css" text="Register" textAlignment="CENTER">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginClicked" styleClass="button-welcome" stylesheets="@../style/main.css" text="Login" textAlignment="CENTER" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#registerClicked" styleClass="button-welcome" stylesheets="@../style/main.css" text="Register" textAlignment="CENTER">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
          </children>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </HBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Label styleClass="label-welcome" text="This is an application made for an internship (Accesa)." />
+            <Label styleClass="label-welcome" text="After registering an account you can complete quests in order to gain tokens, badges and rank." />
+            <Label styleClass="label-welcome" text="Or if you feel creative you can create your own quests." />
+         </children></VBox>
    </children>
 </GridPane>

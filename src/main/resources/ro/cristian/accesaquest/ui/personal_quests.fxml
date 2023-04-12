@@ -2,4 +2,4 @@
 
 <?import javafx.scene.control.ScrollPane?>
 
-<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="background-quests" stylesheets="@../style/main.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="ro.cristian.accesaquest.controllers.PersonalQuests" fx:id="scrollPane"/>
+<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="background-scroll-pane" stylesheets="@../style/main.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="ro.cristian.accesaquest.controllers.PersonalQuests" fx:id="scrollPane"/>

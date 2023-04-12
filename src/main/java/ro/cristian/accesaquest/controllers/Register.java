@@ -42,4 +42,9 @@ public class Register {
             App.getInstance().loadScene("profile");
         }
     }
+
+    @FXML
+    private void back(ActionEvent actionEvent) {
+        App.getInstance().loadScene("welcome");
+    }
 }

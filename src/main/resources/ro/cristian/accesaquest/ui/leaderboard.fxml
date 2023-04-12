@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-          minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-color"
+          minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="vista-blue-background-color"
           stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="ro.cristian.accesaquest.controllers.Leaderboard">
     <columnConstraints>
@@ -23,7 +23,7 @@
     </rowConstraints>
     <fx:include source="navigation.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-    <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0" styleClass="background-quests"
+    <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0" styleClass="background-scroll-pane"
                 stylesheets="@../style/main.css" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                 GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS"/>
 </GridPane>

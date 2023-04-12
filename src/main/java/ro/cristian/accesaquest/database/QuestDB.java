@@ -320,27 +320,23 @@ public class QuestDB implements QuestDBI{
 
     private Player updateBadgesCreator(Player creator) {
         String fileName = "badge_questCreatedCompleted_";
-        if(creator.getQuestsCreatedCompleted() == 1) creator.addBadge(loadBadge(fileName + "1"));
-        if(creator.getQuestsCreatedCompleted() == 5) creator.addBadge(loadBadge(fileName + "2"));
-        if(creator.getQuestsCreatedCompleted() == 10) creator.addBadge(loadBadge(fileName + "3"));
-        if(creator.getQuestsCreatedCompleted() == 15) creator.addBadge(loadBadge(fileName + "4"));
-        if(creator.getQuestsCreatedCompleted() == 20) creator.addBadge(loadBadge(fileName + "5"));
+        if(creator.getQuestsCreatedCompleted() == 1) creator.addBadge(fileName + "1.png");
+        if(creator.getQuestsCreatedCompleted() == 5) creator.addBadge(fileName + "2.png");
+        if(creator.getQuestsCreatedCompleted() == 10) creator.addBadge(fileName + "3.png");
+        if(creator.getQuestsCreatedCompleted() == 15) creator.addBadge(fileName + "4.png");
+        if(creator.getQuestsCreatedCompleted() == 20) creator.addBadge(fileName + "5.png");
 
         return creator;
     }
 
     private Player updateBadgesTaker(Player taker) {
         String fileName = "badge_questsTakenCompleted_";
-        if(taker.getQuestsTakenCompleted() == 1) taker.addBadge(loadBadge(fileName + "1"));
-        if(taker.getQuestsTakenCompleted() == 5) taker.addBadge(loadBadge(fileName + "2"));
-        if(taker.getQuestsTakenCompleted() == 10) taker.addBadge(loadBadge(fileName + "3"));
-        if(taker.getQuestsTakenCompleted() == 15) taker.addBadge(loadBadge(fileName + "4"));
-        if(taker.getQuestsTakenCompleted() == 20) taker.addBadge(loadBadge(fileName + "5"));
+        if (taker.getQuestsTakenCompleted() == 1) taker.addBadge(fileName + "1.png");
+        if (taker.getQuestsTakenCompleted() == 5) taker.addBadge(fileName + "2.png");
+        if (taker.getQuestsTakenCompleted() == 10) taker.addBadge(fileName + "3.png");
+        if (taker.getQuestsTakenCompleted() == 15) taker.addBadge(fileName + "4.png");
+        if (taker.getQuestsTakenCompleted() == 20) taker.addBadge(fileName + "5.png");
 
         return taker;
-    }
-
-    private String loadBadge(String fileName){
-        return Objects.requireNonNull(App.class.getResource("badges/" + fileName + ".png")).toString();
     }
 }
